@@ -32,9 +32,15 @@ class RepoHistory:
         return self.client
 
     def transform_pr(self, pr):
+        if(pr.title.startswith("[")):
+            jira_ticket = pr.title.split("]")[0][1:]
+        else:
+            jira_ticket = "-"
+
         data = {}
         data['id'] = pr.id
-        data['title'] = pr.title
+        data['jira_ticket'] = jira_ticket
+        data['title'] = pr.title.rpartition(']')[2]
         data['state'] = pr.state
         data['number'] = pr.number
         data['labels'] = pr.labels
